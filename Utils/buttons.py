@@ -121,7 +121,6 @@ class TogglePassword(Button):
 			self.parent.password_input.setEchoMode(QLineEdit.Password)
 			self.setIcon(QIcon("Utils/Assets/hide_password.png"))
 
-
 class BackButton(Button):
 
 	def __init__(self, icon, cursor, parent=None):
@@ -143,7 +142,6 @@ class UserButton(Button):
 		self.setStyleSheet(""" QPushButton{
 							    	background: transparent;
 								}""")
-
 
 class CloseButton(Button):
 
@@ -186,9 +184,7 @@ class AddButton(Button):
 	def __init__(self, icon, cursor, parent=None):
 		super().__init__(icon, cursor, parent)
 
-
 class ReloadButton(Button):
-
 
 	def __init__(self, icon, cursor, input_field, length_field=12, is_adapt=True, parent=None):
 		super().__init__(icon, cursor, parent)
@@ -224,7 +220,6 @@ class ReloadButton(Button):
 		self.parent.length_text.hide()
 		self.length_field.hide()
 		self.parent.main_layout.itemAt(0).changeSize(0, 25)
-		#self.parent.main_layout.removeLayout(self.parent.main_layout.itemAt(5).layout())
 
 	def adapt_size(self, text):
 		if self.is_adapt:

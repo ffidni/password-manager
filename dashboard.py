@@ -244,7 +244,6 @@ class PasswordList(QScrollArea):
 		exec(f"self.{var_app_name} = AppWidget(self.user_id, {self.app_id}, app_title, {bool(password)}, True, parent=self.parent)")
 		self.main_layout.insertWidget(self.layout_idx, eval(f"self.{var_app_name}"), alignment=Qt.AlignCenter)
 
-
 class HotkeyList(QScrollArea):
 
 	def __init__(self, parent=None):
@@ -493,9 +492,3 @@ class Dashboard(QWidget):
 		width, height = self.parent.width(), self.parent.height()
 		center_popup(self.account_list, width, height)
 		center_popup(self.account_edit, width, height)
-
-if __name__ == '__main__':
-	app = QApplication([])
-	win = Dashboard(1)
-	win.show()
-	exit(app.exec_())

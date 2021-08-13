@@ -9,7 +9,6 @@ class QListWidgetItem(QListWidgetItem):
 		self.widget = widget
 		self.widget.list_widget = self
 
-
 class Popup(QMainWindow):
 	
 	def __init__(self, parent=None):
@@ -21,7 +20,6 @@ class Popup(QMainWindow):
 		self.setWindowFlags(Qt.CustomizeWindowHint | Qt.FramelessWindowHint)
 		self.setCentralWidget(self.central_widget)
 		popups.append(self)
-
 
 	def init_ui(self):
 		self.widget_management()
@@ -137,8 +135,6 @@ class GenerateResult(Popup):
 		self.main_layout.addSpacing(25)
 		self.central_widget.setLayout(self.main_layout)
 
-
-
 	def setup_stylesheet(self):
 		super().setup_stylesheet()
 		self.save_btn.setStyleSheet("""background: #e0e0e0;
@@ -182,7 +178,6 @@ class GenerateResult(Popup):
 			self.password.deselect()
 
 		return super().eventFilter(obj, event)
-
 
 class AccountInfo(QFrame):
 
@@ -921,11 +916,3 @@ class AppPass(Popup):
 				else:
 					self.unfocus_input()
 		return super().eventFilter(obj, event)
-
-
-
-if __name__ == '__main__':
-	app = QApplication(argv)
-	win = Error("User already exists!")
-	win.show()
-	exit(app.exec_())
