@@ -1,6 +1,7 @@
 from Utils.popup import *
 from dashboard import *
 
+
 class Menu(QWidget):
 	goto_signal = pyqtSignal(str)
 
@@ -22,7 +23,6 @@ class Menu(QWidget):
 			self.create_acc = CreateAccount(parent=self, first=True)
 
 		self.generate_popup = GenerateResult(self)
-		self.generate_popup.setWindowFlags(Qt.CustomizeWindowHint | Qt.FramelessWindowHint)
 		self.generate_popup.hide()
 
 	def show_register(self):
@@ -31,21 +31,28 @@ class Menu(QWidget):
 
 	def on_click(self, event):
 		if self.user_exist:
+			self.parent.user_exist = self.user_exist
 			if event == 'generate':
 				self.parent.generate_pass()
 			elif event == 'dashboard':
 				self.goto_signal.emit("Dashboard")
 		else:
 			self.show_register()
-		
+
 	def setup_widget(self):
 		self.title = QLabel("Password Manager")
-		self.lock_icon = QPushButton(icon=QIcon("Utils/Assets/lock.png"), cursor=QCursor(Qt.PointingHandCursor))
+		self.lock_icon = QPushButton(
+									icon=QIcon("Utils/Assets/lock.png"),
+									cursor=QCursor(Qt.PointingHandCursor)
+									)
 		self.ver_line = QFrame()
-		self.key_icon = QPushButton(icon=QIcon("Utils/Assets/key.png"), cursor=QCursor(Qt.PointingHandCursor))
+		self.key_icon = QPushButton(
+									icon=QIcon("Utils/Assets/key.png"),
+									cursor=QCursor(Qt.PointingHandCursor)
+									)
 		self.generate_text = QLabel("Generate Secure Password")
 		self.dashboard_text = QLabel("Dashboard")
-		
+
 		self.title.setFont(QFont("MS Shell Dlg 2", 37))
 		self.generate_text.setWordWrap(True)
 		self.generate_text.setAlignment(Qt.AlignCenter)
@@ -53,10 +60,12 @@ class Menu(QWidget):
 		self.dashboard_text.setFont(QFont("MS Shell Dlg 2", 14))
 		self.lock_icon.clicked.connect(lambda: self.on_click('generate'))
 		self.lock_icon.setIconSize(QSize(140, 152))
+		self.lock_icon.setFocusPolicy(Qt.NoFocus)
 		self.key_icon.clicked.connect(lambda: self.on_click("dashboard"))
 		self.key_icon.setIconSize(QSize(98, 152))
+		self.key_icon.setFocusPolicy(Qt.NoFocus)
 		self.ver_line.setFrameShape(QFrame.VLine)
-		
+
 	def setup_layout(self):
 		self.main_layout = QVBoxLayout()
 		self.icon_layout = QHBoxLayout()
@@ -64,10 +73,22 @@ class Menu(QWidget):
 		self.dashboard_layout = QVBoxLayout()
 
 		self.main_layout.addWidget(self.title, alignment=Qt.AlignCenter)
-		self.generate_layout.addWidget(self.lock_icon, alignment=Qt.AlignBottom | Qt.AlignCenter)
-		self.generate_layout.addWidget(self.generate_text, alignment=Qt.AlignTop | Qt.AlignCenter)
-		self.dashboard_layout.addWidget(self.key_icon, alignment=Qt.AlignBottom | Qt.AlignCenter)
-		self.dashboard_layout.addWidget(self.dashboard_text, alignment=Qt.AlignTop | Qt.AlignCenter)
+		self.generate_layout.addWidget(
+									self.lock_icon,
+									alignment=Qt.AlignBottom | Qt.AlignCenter
+									)
+		self.generate_layout.addWidget(
+									self.generate_text,
+									alignment=Qt.AlignTop | Qt.AlignCenter
+									)
+		self.dashboard_layout.addWidget(
+										self.key_icon,
+										alignment=Qt.AlignBottom | Qt.AlignCenter
+										)
+		self.dashboard_layout.addWidget(
+										self.dashboard_text,
+										alignment=Qt.AlignTop | Qt.AlignCenter
+										)
 		self.icon_layout.addSpacing(100)
 		self.icon_layout.addLayout(self.generate_layout)
 		self.icon_layout.addWidget(self.ver_line)
@@ -86,6 +107,7 @@ class Menu(QWidget):
 		self.generate_text.setStyleSheet("color: #e0e0e0;")
 		self.dashboard_text.setStyleSheet("color: #e0e0e0;")
 
+
 class HotkeyThread(QThread):
 	def __init__(self, parent):
 		super().__init__(parent)
@@ -101,11 +123,12 @@ class HotkeyThread(QThread):
 			self.hotkeys[1][1]: self.show_list,
 			self.hotkeys[1][2]: self.switch_popup
 			}) as self.l:
-				self.l.join()
+			self.l.join()
 
 	def stop(self):
 		self.terminate()
 		self.l.stop()
+
 
 class PageSelector(QStackedWidget):
 
@@ -124,7 +147,7 @@ class PageSelector(QStackedWidget):
 		self.setStyleSheet("""#Main{background: #406b7f;}""")
 		self.setFixedSize(self.w, self.h)
 		self.installEventFilter(self)
-		
+
 		self.hotkeys = self.get_hotkeys()
 		self.hotkey_thread = HotkeyThread(self)
 		self.hotkey_thread.start()

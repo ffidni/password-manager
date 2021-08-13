@@ -183,8 +183,3 @@ class Database:
 			self.cursor.execute("SELECT * FROM '{}'".format(table))
 			
 		return self.cursor.fetchall()
-
-if __name__ == '__main__':
-	db = Database("data.db")
-	print(db.get_data("users"))
-	print(db.get_users(6))

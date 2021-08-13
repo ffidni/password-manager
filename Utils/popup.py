@@ -9,6 +9,7 @@ class QListWidgetItem(QListWidgetItem):
 		self.widget = widget
 		self.widget.list_widget = self
 
+
 class Popup(QMainWindow):
 	
 	def __init__(self, parent=None):
@@ -43,6 +44,7 @@ class Popup(QMainWindow):
 			if widget != self and not widget.isHidden():
 				widget.hide()
 
+
 class LengthInput(QSpinBox):
 
 	def __init__(self, parent=None):
@@ -50,6 +52,7 @@ class LengthInput(QSpinBox):
 		self.setValue(16)
 		self.setFixedSize(61, 20)
 		self.setStyleSheet("QSpinBox{background: lightgrey;}")
+
 
 class GenerateResult(Popup):
 
@@ -179,6 +182,7 @@ class GenerateResult(Popup):
 
 		return super().eventFilter(obj, event)
 
+
 class AccountInfo(QFrame):
 
 	def __init__(self, shorten_info, unshorten_info, user_id, parent=None):
@@ -247,6 +251,7 @@ class AccountInfo(QFrame):
 			self.delete_btn.setFixedSize(1, 1)
 
 		return super().eventFilter(obj, event)
+
 
 class SwitchAccount(Popup):
 
@@ -359,6 +364,7 @@ class SwitchAccount(Popup):
 								border: none;
 							}""")
 
+
 class Error(QMessageBox):
 
 	def __init__(self, text="Error Message"):
@@ -408,6 +414,7 @@ class HotkeyPopup(QMessageBox):
 
 	def ok_clicked(self, button):
 		self.thread.terminate()
+		self.thread.listener.stop()
 		if len(self.thread.keys) > 1:
 			self.thread.finished_signal.emit(self.thread.keys)
 		else:
@@ -415,6 +422,7 @@ class HotkeyPopup(QMessageBox):
 			self.error.show()
 		self.reset_input()
 
+	@pyqtSlot(list)
 	def finished_slot(self, keys):
 		if keys:
 			self.apply_input(keys)
@@ -437,6 +445,7 @@ class HotkeyPopup(QMessageBox):
 			self.id = id
 		self.parent.hotkey_thread.stop()
 		QTimer.singleShot(100, self.thread.start)
+
 
 class HotkeyInputThread(QThread):
 	finished_signal = pyqtSignal(list)
@@ -472,9 +481,10 @@ class HotkeyInputThread(QThread):
 
 	def run(self):
 		with Listener(
-			on_press=self.on_press) as listener:
-			listener.join()
+			on_press=self.on_press) as self.listener:
+			self.listener.join()
 			self.finished_signal.emit([])
+
 
 class CreateAccount(Popup):
 
@@ -491,6 +501,7 @@ class CreateAccount(Popup):
 		self.hide()
 
 	def widget_management(self):
+		self.account_info = None
 		self.error = Error()
 		self.close_btn = CloseButton(icon="Utils/Assets/close.png", cursor=Qt.PointingHandCursor, parent=self)
 		self.title = QLabel("Edit account" if self.is_edit else "Create an Account")
@@ -545,8 +556,9 @@ class CreateAccount(Popup):
 				lw = self.parent.account_list.list
 				for index in range(lw.count()):
 					list_item = lw.item(index).widget
-					self.list_item = list_item
-					self.update_item(username, email)
+					if list_item.account_info.text() == self.account_info:
+						self.list_item = list_item
+						self.update_item(username, email)
 				self.list_item = None
 				self.parent.account_widget.account_info.setText(account_info)
 			self.parent.username = username
@@ -569,7 +581,8 @@ class CreateAccount(Popup):
 				dashboard.current_user_id = user_id
 				menu.generate_popup.update_app_items()
 				goto_dashboard(dashboard, username, email, user_id)
-				self.parent.is_exist = True
+				#print(self.parent.is_exist)
+				self.parent.user_exist = True
 				QTimer.singleShot(500, lambda: dashboard.account_list.list.setCurrentRow(dashboard.account_list.list.count()-1))
 				if self.add_account:
 					shorten = shorten_text(username, email)
@@ -656,6 +669,7 @@ class CreateAccount(Popup):
 								background: #5a5a5a;
 								border: 1px solid gray;
 							}""")
+
 
 class AppPass(Popup):
 

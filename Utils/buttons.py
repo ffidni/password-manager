@@ -8,6 +8,7 @@ class Button(QPushButton):
 		self.setStyleSheet("background: transparent;")
 		self.setIcon(QIcon(icon))
 		self.setCursor(cursor)
+		self.setFocusPolicy(Qt.NoFocus)
 
 class EditButton(Button):
 
@@ -16,6 +17,7 @@ class EditButton(Button):
 		self.widget = widget
 		self.setIconSize(QSize(32, 32))
 		self.setToolTip("Edit account's info")
+
 
 class DeleteButton(Button):
 
@@ -64,6 +66,7 @@ class DeleteButton(Button):
 			else:
 				self.main_list.takeItem(self.main_list.row(self.list_widget))
 
+
 class AppButton(Button):
 
 	def __init__(self, icon, cursor, parent=None):
@@ -97,6 +100,7 @@ class AppButton(Button):
 			self.db.cursor.execute("UPDATE apps SET icon_url = ? WHERE id = ?", (self.current_img, self.app_id))
 			self.db.cursor.execute("UPDATE apps SET name = ? WHERE id = ?", (self.parent.app_title.text().lower(), self.app_id))
 
+
 class TogglePassword(Button):
 
 	def __init__(self, icon, cursor, parent=None):
@@ -121,6 +125,7 @@ class TogglePassword(Button):
 			self.parent.password_input.setEchoMode(QLineEdit.Password)
 			self.setIcon(QIcon("Utils/Assets/hide_password.png"))
 
+
 class BackButton(Button):
 
 	def __init__(self, icon, cursor, parent=None):
@@ -130,6 +135,7 @@ class BackButton(Button):
 
 	def back(self):
 		self.parent.goto_signal.emit("Menu")
+
 
 class UserButton(Button):
 
@@ -143,11 +149,13 @@ class UserButton(Button):
 							    	background: transparent;
 								}""")
 
+
 class CloseButton(Button):
 
 	def __init__(self, icon, cursor, parent=None):
 		super().__init__(icon, cursor, parent)
 		self.clicked.connect(parent.hide)
+
 
 class CopyButton(Button):
 
@@ -179,10 +187,12 @@ class CopyButton(Button):
 		if hidden:
 			input_field.setEchoMode(QLineEdit.Password)
 
+
 class AddButton(Button):
 
 	def __init__(self, icon, cursor, parent=None):
 		super().__init__(icon, cursor, parent)
+
 
 class ReloadButton(Button):
 

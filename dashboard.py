@@ -1,5 +1,6 @@
 from Utils.popup import *
 
+
 class ClickableApp(QPushButton):
 
 	def __init__(self, parent=None):
@@ -24,9 +25,10 @@ class ClickableApp(QPushButton):
 
 	def setup_stylesheet(self):
 		self.setStyleSheet("""QPushButton{
-							  color: #e0e0e0;
-							  background: transparent;
-							  }""")
+								color: #e0e0e0;
+								background: transparent;
+							}""")
+
 
 class AppWidget(QFrame):
 
@@ -98,6 +100,7 @@ class AppWidget(QFrame):
 				self.view_password()
 
 		return super().eventFilter(obj, event)
+
 
 class PasswordList(QScrollArea):
 
@@ -244,6 +247,7 @@ class PasswordList(QScrollArea):
 		exec(f"self.{var_app_name} = AppWidget(self.user_id, {self.app_id}, app_title, {bool(password)}, True, parent=self.parent)")
 		self.main_layout.insertWidget(self.layout_idx, eval(f"self.{var_app_name}"), alignment=Qt.AlignCenter)
 
+
 class HotkeyList(QScrollArea):
 
 	def __init__(self, parent=None):
@@ -272,11 +276,9 @@ class HotkeyList(QScrollArea):
 		self.open_pass_key.setReadOnly(True)
 		self.open_list_key.setReadOnly(True)
 		self.switch_account_key.setReadOnly(True)
-
 		self.open_pass_key.setObjectName("gen")
 		self.open_list_key.setObjectName("list")
 		self.switch_account_key.setObjectName("switch")
-
 
 	def setup_stylesheet(self):
 		for name in ('open_pass', 'open_list', 'switch_account'):
@@ -306,7 +308,7 @@ class HotkeyList(QScrollArea):
 	def setup_layout(self):
 		self.main_layout = QVBoxLayout()
 		self.form_layout = QFormLayout()
-		#self.main_layout.addSpacing(4)
+
 		self.main_layout.addWidget(self.title, alignment=Qt.AlignCenter)
 		self.main_layout.addSpacing(12)
 		for name in ('open_pass', 'open_list', 'switch_account'):
@@ -316,7 +318,6 @@ class HotkeyList(QScrollArea):
 			spacer2.setFixedHeight(6)
 			self.form_layout.addRow(spacer1, spacer2)
 
-		#self.form_layout.setSpacing(8)
 		self.main_layout.addLayout(self.form_layout)
 		self.main_layout.addSpacing(15)
 		self.setLayout(self.main_layout)
@@ -328,6 +329,7 @@ class HotkeyList(QScrollArea):
 				self.hotkey_popup.show(obj.objectName(), obj)
 
 		return super().eventFilter(obj, event)
+
 
 class AccountWidget(QFrame):
 
@@ -348,6 +350,7 @@ class AccountWidget(QFrame):
 		dashboard.account_edit.username_input.setText(dashboard.username)
 		dashboard.account_edit.email_input.setText(dashboard.email)
 		dashboard.account_edit.list_item = None
+		dashboard.account_edit.account_info = f"{self.parent.username}\n{self.parent.email}"
 
 	def init_ui(self):
 		self.main_layout = QHBoxLayout()
@@ -395,6 +398,7 @@ class AccountWidget(QFrame):
 
 		return super().eventFilter(obj, event)
 
+
 class Dashboard(QWidget):
 	goto_signal = pyqtSignal(str)
 
@@ -439,7 +443,6 @@ class Dashboard(QWidget):
 		self.hotkeys.installEventFilter(self)
 		self.back_btn.setIconSize(QSize(32, 32))
 		self.back_btn.setFixedSize(32, 32)
-		#self.account_widget.account_info.setWordWrap(True)
 		self.line.setFrameShape(QFrame.HLine)
 		self.line.setFixedWidth(410)
 		self.account_widget.account_info.setFont(QFont("MS Shell Dlg 2", 12))
@@ -470,13 +473,11 @@ class Dashboard(QWidget):
 		self.board_layout = QHBoxLayout()
 		self.board_widget = QWidget()
 
-		#self.main_layout.addWidget(self.back_btn, alignment=Qt.AlignLeft)
 		self.main_layout.addSpacing(70)
 		self.account_layout.addWidget(self.back_btn, alignment=Qt.AlignRight)
 		self.account_layout.addWidget(self.account_widget, alignment=Qt.AlignLeft)
 		widget.setLayout(self.account_layout)
 		self.main_layout.addWidget(widget, alignment=Qt.AlignCenter)
-		#self.main_layout.addLayout(self.account_layout)
 		self.main_layout.addWidget(self.line, alignment=Qt.AlignCenter)
 		self.board_layout.addWidget(self.password_list, alignment=Qt.AlignRight)
 		self.board_layout.addSpacing(15)
