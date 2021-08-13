@@ -1,2 +1,2 @@
 # password-manager
-App To Save Password And Generate Secure Password
+App to save password and generate secure password
