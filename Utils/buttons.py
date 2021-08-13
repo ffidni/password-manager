@@ -62,7 +62,9 @@ class DeleteButton(Button):
 					main = self.parent.parent.parent
 					main.user_exist = False
 					main.setCurrentWidget(main.m_pages["Menu"])
-					main.generate_pass()
+					main.generate_pass(reset=True)
+					main.user_exist = False
+					main.m_pages["Menu"].user_exist = False
 			else:
 				self.main_list.takeItem(self.main_list.row(self.list_widget))
 

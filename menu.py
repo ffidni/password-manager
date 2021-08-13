@@ -25,7 +25,10 @@ class Menu(QWidget):
 		self.generate_popup = GenerateResult(self)
 		self.generate_popup.hide()
 
-	def show_register(self):
+	def show_register(self, reset=False):
+		if reset:
+			self.create_acc.username_input.setText("")
+			self.create_acc.email_input.setText("")
 		center_popup(self.create_acc, self.parent.width(), self.parent.height())
 		self.create_acc.show()
 
@@ -181,9 +184,10 @@ class PageSelector(QStackedWidget):
 			for _ in range(15):
 				self.keyboard.press(HotKey.parse("<ctrl>")[0])
 
-	def generate_pass(self):
+	def generate_pass(self, reset=False):
 		if self.user_exist:
 			self.is_active()
+
 			if self.currentWidget() != "Menu":
 				self.goto("Menu")
 			popup = self.m_pages["Menu"].generate_popup
@@ -192,7 +196,7 @@ class PageSelector(QStackedWidget):
 			popup.reload_btn.generate_pass(popup.length_input.value())
 			new_pass = popup.password.text()
 		else:
-			self.m_pages["Menu"].show_register()
+			self.m_pages["Menu"].show_register(reset=reset)
 
 	def switch_popup(self):
 		if self.user_exist:

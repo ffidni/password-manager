@@ -581,8 +581,8 @@ class CreateAccount(Popup):
 				dashboard.current_user_id = user_id
 				menu.generate_popup.update_app_items()
 				goto_dashboard(dashboard, username, email, user_id)
-				#print(self.parent.is_exist)
-				self.parent.user_exist = True
+				menu.user_exist = True
+				menu.parent.user_exist = True
 				QTimer.singleShot(500, lambda: dashboard.account_list.list.setCurrentRow(dashboard.account_list.list.count()-1))
 				if self.add_account:
 					shorten = shorten_text(username, email)

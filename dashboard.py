@@ -6,6 +6,7 @@ class ClickableApp(QPushButton):
 	def __init__(self, parent=None):
 		super().__init__()
 		self.parent = parent
+		self.setFocusPolicy(Qt.NoFocus)
 		self.init_ui()
 
 	def init_ui(self):
